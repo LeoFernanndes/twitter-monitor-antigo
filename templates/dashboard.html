@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load widget_tweaks %}
+
+{% include 'partials/_navbar.html' %}
+
+    <div class="container">
+    <h3>Dashboard</h3>
+    <p>Lista de perfis monitorados.</p>    
+    {% if lista_arrobas %}
+    <section>
+        <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                {% for arroba in lista_arrobas %}
+                {{ arroba.arroba }}
+            </div>
+            <div class="col-sm-6">
+                <a type="button" class="btn btn-danger" href="{% url 'deleta_arroba' arroba.id %}">Deleta</a>
+                {% endfor %}
+            </div>
+        </div>
+        </div>
+    {% else %}
+    <p>Lista vazia. Clique <a href="{% url 'cadastro_arroba' %}">aqui</a> para cadastrar arrobas para monitoramento.</p>
+    {% endif %}
+    </section>
+    </div>
+
+
+{% endblock %}

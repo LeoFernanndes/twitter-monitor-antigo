@@ -1,0 +1,21 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Twitter Monitor</a>
+    </div>
+    {% if user.is_authenticated %}
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="{% url 'index' %}">Home</a></li>
+      <li><a href="{% url 'dashboard' %}">My Pages</a></li>
+      <li><a href="{% url 'cadastro_arroba' %}">Cadastro Arroba</a></li>
+      <li><a href="{% url 'logout' %}">Logout</a></li>
+    </ul>
+    {% else %}
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="{% url 'index' %}">Home</a></li>
+      <li><a href="{% url 'cadastro' %}">Cadastro</a></li>
+      <li><a href="{% url 'login' %}">Login</a></li>
+    </ul>
+    {% endif %}
+  </div>
+</nav>

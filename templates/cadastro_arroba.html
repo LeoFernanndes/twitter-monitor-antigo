@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load widget_tweaks %}
+
+{% include 'partials/_navbar.html' %}
+
+    <div class="container">
+    <h3>Cadastro Perfis</h3>
+    <p>Cadastro de perfis a serem monitorados.</p>
+    <section>
+        <form action="" method="POST">
+        {% csrf_token %}
+        {% for field in arroba_form.visible_fields %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field|add_class:'form-control' }}
+        </div>
+        {% endfor %}
+        <input type="submit" class="btn btn-success">
+      
+        </form>
+    </section>
+    </div>
+
+
+{% endblock %}
