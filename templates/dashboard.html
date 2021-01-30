@@ -11,11 +11,9 @@
     <section>
         <div class="container">
         <div class="row">
-            <div class="col-sm-6">
-                {% for arroba in lista_arrobas %}
+            {% for arroba in lista_arrobas %}
+            <div class="col-xs-12 col-sm-6 col-lg-4">            
                 {{ arroba.arroba }}
-            </div>
-            <div class="col-sm-6">
                 <a type="button" class="btn btn-danger" href="{% url 'deleta_arroba' arroba.id %}">Deleta</a>
                 {% endfor %}
             </div>

@@ -1,21 +1,23 @@
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">Twitter Monitor</a>
-    </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Twitter Monitor</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     {% if user.is_authenticated %}
-    <ul class="nav navbar-nav">
-      <li class="active"><a href="{% url 'index' %}">Home</a></li>
-      <li><a href="{% url 'dashboard' %}">My Pages</a></li>
-      <li><a href="{% url 'cadastro_arroba' %}">Cadastro Arroba</a></li>
-      <li><a href="{% url 'logout' %}">Logout</a></li>
-    </ul>
+    <div class="navbar-nav">
+      <a class="nav-item nav-link active" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
+      <a class="nav-item nav-link" href="{% url 'dashboard' %}">My Pages</a>
+      <a class="nav-item nav-link" href="{% url 'cadastro_arroba' %}">Cadastro Arroba</a>
+      <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+    </div>
     {% else %}
-    <ul class="nav navbar-nav">
-      <li class="active"><a href="{% url 'index' %}">Home</a></li>
-      <li><a href="{% url 'cadastro' %}">Cadastro</a></li>
-      <li><a href="{% url 'login' %}">Login</a></li>
-    </ul>
+    <div class="navbar-nav">
+      <a class="nav-item nav-link active" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
+      <a class="nav-item nav-link" href="{% url 'cadastro' %}">Cadastro</a>
+      <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+    </div>
     {% endif %}
   </div>
 </nav>

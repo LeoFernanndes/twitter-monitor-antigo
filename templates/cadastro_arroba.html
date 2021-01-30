@@ -8,7 +8,7 @@
     <h3>Cadastro Perfis</h3>
     <p>Cadastro de perfis a serem monitorados.</p>
     <section>
-        <form action="" method="POST">
+        <form action="{% url 'cadastro_arroba' %}" method="POST">
         {% csrf_token %}
         {% for field in arroba_form.visible_fields %}
         <div class="form-group">

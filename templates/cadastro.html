@@ -10,7 +10,7 @@
     <p>Cadatro no app de monitoramento de perfis do Twitter.</p>
     <section>
         <form method="POST" action="{% url 'cadastro' %}">
-            {% csrf_token %}
+        {% csrf_token %}
         {% for field in cadastro_form.visible_fields %}
         <div class="form-group">
             <label for="{{ field.id_for_label }}">{{ field.label }}</label>

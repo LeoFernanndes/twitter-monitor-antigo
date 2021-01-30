@@ -8,8 +8,8 @@
     <h3>Login</h3>
     <p>Login no app de monitoramento do Twitter.</p>
     <section>
-        <form method="POST" action="">
-            {% csrf_token %}
+        <form method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
         {% for field in login_form.visible_fields %}
         <div class="form-group">
             <label for="{{ field.id_for_label }}">{{ field.label }}</label>
