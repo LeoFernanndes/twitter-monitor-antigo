@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load widget_tweaks %}
+
+{% include 'partials/_navbar.html' %}
+
+    <div class="container">
+    <h3>{{ arroba.arroba }}</h3>
+    <p>Página inicial app de monitoramento de perfis do Twitter.</p>
+    <p>Numero de tweets {{ len }}.</p>
+    <section>
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Tweet</th>
+            </tr>
+        {% for tweet in json_tweets %}
+            <tr>
+                <td>{{ tweet.date }}</td>
+                <td>{{ tweet.text }}</td>
+            </tr>
+        {% endfor %}
+        </table>        
+    </section>
+    <section>    
+    <a type="button" class="btn btn-danger" href="{% url 'deleta_arroba' arroba.id %}">Deletar</a>   
+    <a href="{% url 'dashboard' %}" class="btn btn-primary">Voltar</a>
+    </section>
+    </div>
+
+
+{% endblock %}

@@ -4,7 +4,10 @@ from django.contrib.auth.models import User
 from django.contrib import auth
 from .models import ArrobaModel
 from django.shortcuts import get_object_or_404
-
+from . import twitter_api
+from . import twitter_database
+import pandas as pd
+import json
 
 # Create your views here.
 def index(request):
@@ -64,7 +67,7 @@ def login(request):
             if user is not None:
                 auth.login(request, user)
 
-            return redirect('index')
+            return redirect('dashboard')
 
         else:
             return redirect('login')
@@ -85,6 +88,9 @@ def dashboard(request):
         }
 
         return render(request, 'dashboard.html', contexto)
+    
+    else:
+        return redirect('index')
 
 
 def cadastro_arroba(request):
@@ -100,13 +106,20 @@ def cadastro_arroba(request):
         arroba = request.POST['arroba']
         user = get_object_or_404(User, pk=request.user.id)
 
+        """
         if ArrobaModel.objects.filter(arroba=arroba).exists():
             return redirect('dashboard')
+        """
 
-        twitter_arroba = ArrobaModel(arroba=arroba, user_id=user)
-        twitter_arroba.save()
+        if twitter_api.validate_user(arroba):
 
-        return redirect('dashboard')
+            twitter_arroba = ArrobaModel(arroba=arroba, user_id=user)
+            twitter_arroba.save()
+
+            return redirect('dashboard')
+
+        else:
+            return redirect('cadastro_arroba')
 
         
 def deleta_arroba(request, arroba_id):
@@ -115,4 +128,21 @@ def deleta_arroba(request, arroba_id):
         arroba.delete()
         return redirect('dashboard')
 
-    
+def detalha_arroba(request, arroba_id):
+    if request.user.is_authenticated:
+        arroba = get_object_or_404(ArrobaModel, pk=arroba_id)
+
+        mydb = twitter_database.mysql_rds_database_authentication('twitter_data')
+        df_tweets = pd.read_sql(f"SELECT * FROM tweets where arroba = '{arroba.arroba}';", con=mydb).sort_values(by='date', ascending=False)
+        df_tweets['date'] = df_tweets['date'].astype(str)
+        string_tweets = df_tweets.head(10).to_json(orient='records')
+        json_tweets = json.loads(string_tweets)
+         
+
+        contexto = {
+            'arroba':arroba,
+            'len': df_tweets.shape,
+            'json_tweets': json_tweets
+        }
+
+        return render(request, 'detalhes_arroba.html', context=contexto)

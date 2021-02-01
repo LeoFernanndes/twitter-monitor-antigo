@@ -8,7 +8,7 @@
     <h3>Cadastro Perfis</h3>
     <p>Cadastro de perfis a serem monitorados.</p>
     <section>
-        <form action="{% url 'cadastro_arroba' %}" method="POST">
+        <form action="{% url 'cadastro_arroba' %}" method="POST" id="cadastro_arroba">
         {% csrf_token %}
         {% for field in arroba_form.visible_fields %}
         <div class="form-group">
@@ -16,11 +16,10 @@
             {{ field|add_class:'form-control' }}
         </div>
         {% endfor %}
-        <input type="submit" class="btn btn-success">
-      
         </form>
+        <button type="submit" form="cadastro_arroba" class="btn btn-success" value="Submit">Enviar</button>
+        <a href="{% url 'dashboard' %}" class="btn btn-primary">Voltar</a>
     </section>
     </div>
-
-
+    
 {% endblock %}
