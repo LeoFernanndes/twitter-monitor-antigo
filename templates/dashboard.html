@@ -12,11 +12,20 @@
         <div class="container">
         <div class="row">
             {% for arroba in lista_arrobas %}
-            <div class="col-xs-12 col-sm-6 col-lg-4">            
-                {{ arroba.arroba }}
-                <a type="button" class="btn btn-danger" href="{% url 'deleta_arroba' arroba.id %}">Deleta</a>
-                {% endfor %}
+            <div class="card-deck">
+                
+                <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="..." alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{ arroba.arroba }}</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Detalhes</a>
+                    <a type="button" class="btn btn-danger" href="{% url 'deleta_arroba' arroba.id %}">Deleta</a>
+                </div>
+                </div>           
+                               
             </div>
+             {% endfor %}
         </div>
         </div>
     {% else %}
