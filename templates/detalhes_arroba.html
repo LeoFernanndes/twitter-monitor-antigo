@@ -9,17 +9,21 @@
     <p>Página inicial app de monitoramento de perfis do Twitter.</p>
     <p>Numero de tweets {{ len }}.</p>
     <section>
-        <table>
-            <tr>
-                <th>Date</th>
-                <th>Tweet</th>
+        <table class="table">
+            <thead>
+            <tr class="row">
+                <th class="col-3">Date</th>
+                <th class="col-9">Tweet</th>
             </tr>
+            </thead>
+            <tbody>
         {% for tweet in json_tweets %}
-            <tr>
-                <td>{{ tweet.date }}</td>
-                <td>{{ tweet.text }}</td>
+            <tr class="row">
+                <td class="col-3">{{ tweet.date }}</td>
+                <td class="col-9">{{ tweet.text }}</td>
             </tr>
         {% endfor %}
+        </tbody>
         </table>        
     </section>
     <section>    
