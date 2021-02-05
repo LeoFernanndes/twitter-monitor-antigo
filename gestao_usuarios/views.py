@@ -8,6 +8,8 @@ from . import twitter_api
 from . import twitter_database
 import pandas as pd
 import json
+import unicodedata
+from django.utils import encoding
 
 # Create your views here.
 def index(request):
@@ -15,6 +17,7 @@ def index(request):
 
 
 def cadastro(request):
+    
     if request.method == "GET":
         cadastro_form = forms.CadastroForms()
         contexto = {
@@ -117,7 +120,10 @@ def cadastro_arroba(request):
             normal_image_url = arroba_attributes.profile_image_url
             larger_image_url = normal_image_url.split('_normal')[0] + normal_image_url.split('_normal')[1]
             
-            twitter_arroba = ArrobaModel(arroba=arroba, profile_image_url=larger_image_url, user_id=user)
+            twitter_arroba = ArrobaModel(arroba=arroba, profile_image_url=larger_image_url, user_id=user,
+            description=arroba_attributes.description,
+            name=arroba_attributes.name)
+            
             twitter_arroba.save()
 
             return redirect('dashboard')
