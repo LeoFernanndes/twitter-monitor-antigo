@@ -27,3 +27,8 @@ def validate_user(user):
     result = False
     
   return result
+  
+def get_arroba_attributes(validated_user):
+    api = twitter_authentication()
+    arroba = api.get_user(validated_user)
+    return arroba

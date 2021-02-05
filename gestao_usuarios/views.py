@@ -112,8 +112,12 @@ def cadastro_arroba(request):
         """
 
         if twitter_api.validate_user(arroba):
-
-            twitter_arroba = ArrobaModel(arroba=arroba, user_id=user)
+            arroba_attributes = twitter_api.get_arroba_attributes(arroba)
+            
+            normal_image_url = arroba_attributes.profile_image_url
+            larger_image_url = normal_image_url.split('_normal')[0] + normal_image_url.split('_normal')[1]
+            
+            twitter_arroba = ArrobaModel(arroba=arroba, profile_image_url=larger_image_url, user_id=user)
             twitter_arroba.save()
 
             return redirect('dashboard')
@@ -131,6 +135,7 @@ def deleta_arroba(request, arroba_id):
 def detalha_arroba(request, arroba_id):
     if request.user.is_authenticated:
         arroba = get_object_or_404(ArrobaModel, pk=arroba_id)
+        
 
         mydb = twitter_database.mysql_rds_database_authentication('twitter_data')
         df_tweets = pd.read_sql(f"SELECT * FROM tweets where arroba = '{arroba.arroba}';", con=mydb).sort_values(by='date', ascending=False)
