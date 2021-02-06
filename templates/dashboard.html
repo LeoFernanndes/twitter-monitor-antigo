@@ -14,12 +14,12 @@
             {% for arroba in lista_arrobas %}
             <div class="card-deck">
                 
-                <div class="card" style="width: 18rem;">
+                <div class="card dashboard-card-margin" style="width: 18rem;">
                 <img class="card-img-top" src={{ arroba.profile_image_url }} alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title">{{ arroba.name }}</h5>
                     <p class="card-text">
-                        <p>@{{ arroba.arroba }}</p>
+                        <p class="blue-paragraph">@{{ arroba.arroba }}</p>
                         <p>{{ arroba.description }}</p>
                     </p>
                    
@@ -34,6 +34,45 @@
              {% endfor %}
         </div>
         </div>
+    
+     <!--Pagination-->
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        {% if lista_arrobas.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ lista_arrobas.previous_page_number }}">Previous</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+          </li>
+        {% endif %}
+        {% for i in lista_arrobas.paginator.page_range %}
+          {% if lista_arrobas.number == i %}
+            <li class="page-item active" aria-current="page">
+              <span class="page-link">
+                {{ i }}
+                <span class="sr-only">(current)</span>
+              </span>
+            </li>
+          {% else %}
+            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+          {% endif %}
+        {% endfor %}
+        {% if lista_arrobas.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ lista_arrobas.next_page_number }}">Next</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+    <!--end of Pagination-->
+        
+        
     {% else %}
     <p>Lista vazia. Clique <a href="{% url 'cadastro_arroba' %}">aqui</a> para cadastrar arrobas para monitoramento.</p>
     {% endif %}

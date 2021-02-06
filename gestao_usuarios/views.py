@@ -10,6 +10,7 @@ import pandas as pd
 import json
 import unicodedata
 from django.utils import encoding
+from django.core.paginator import Paginator
 
 # Create your views here.
 def index(request):
@@ -80,7 +81,7 @@ def logout(request):
     auth.logout(request)
     return redirect('index')
 
-
+"""
 def dashboard(request):
     if request.user.is_authenticated:
         id = request.user.id 
@@ -94,7 +95,28 @@ def dashboard(request):
     
     else:
         return redirect('index')
+"""
 
+def dashboard(request):
+    if request.user.is_authenticated:
+        
+        id = request.user.id 
+        
+        lista_arrobas = ArrobaModel.objects.filter(user_id=request.user)
+        paginator = Paginator(lista_arrobas, 3)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        
+        contexto = {
+            'id': id,
+            'lista_arrobas': page_obj
+        }
+
+        return render(request, 'dashboard.html', contexto)
+    
+    else:
+        return redirect('index')
+        
 
 def cadastro_arroba(request):
     if request.method == "GET":
