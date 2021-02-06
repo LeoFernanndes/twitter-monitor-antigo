@@ -12,9 +12,9 @@
         <div class="container">
         <div class="row">
             {% for arroba in lista_arrobas %}
-            <div class="card-deck">
+            <div class="card-deck dashboard-card-margin">
                 
-                <div class="card dashboard-card-margin" style="width: 18rem;">
+                <div class="card" style="width: 18rem;">
                 <img class="card-img-top" src={{ arroba.profile_image_url }} alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title">{{ arroba.name }}</h5>
@@ -36,7 +36,7 @@
         </div>
     
      <!--Pagination-->
-    <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation example" class="pagination-menu-margin">
       <ul class="pagination justify-content-center">
         {% if lista_arrobas.has_previous %}
           <li class="page-item">

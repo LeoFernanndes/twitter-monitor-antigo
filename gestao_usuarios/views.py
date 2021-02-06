@@ -51,13 +51,22 @@ def cadastro(request):
 
 
 def login(request):
+    
     if request.method == "GET":
-        login_form = forms.LoginForms()
-        contexto = {
-            'login_form': login_form
-    }
-
-        return render(request, 'login.html', contexto)
+        
+        if request.user.is_authenticated:
+            return redirect('dashboard')
+        
+        else:
+        
+            login_form = forms.LoginForms()
+            contexto = {
+                'login_form': login_form
+        }
+    
+            return render(request, 'login.html', contexto)
+    
+    
     
     if request.method == 'POST':
         email = request.POST['email']
@@ -81,21 +90,6 @@ def logout(request):
     auth.logout(request)
     return redirect('index')
 
-"""
-def dashboard(request):
-    if request.user.is_authenticated:
-        id = request.user.id 
-        lista_arrobas = ArrobaModel.objects.filter(user_id=request.user)
-        contexto = {
-            'id': id,
-            'lista_arrobas': lista_arrobas
-        }
-
-        return render(request, 'dashboard.html', contexto)
-    
-    else:
-        return redirect('index')
-"""
 
 def dashboard(request):
     if request.user.is_authenticated:
@@ -160,6 +154,7 @@ def deleta_arroba(request, arroba_id):
         arroba.delete()
         return redirect('dashboard')
 
+"""
 def detalha_arroba(request, arroba_id):
     if request.user.is_authenticated:
         arroba = get_object_or_404(ArrobaModel, pk=arroba_id)
@@ -176,6 +171,41 @@ def detalha_arroba(request, arroba_id):
             'arroba':arroba,
             'len': df_tweets.shape,
             'json_tweets': json_tweets
+        }
+
+        return render(request, 'detalhes_arroba.html', context=contexto)
+"""        
+        
+def detalha_arroba(request, arroba_id):
+    if request.user.is_authenticated:
+        arroba = get_object_or_404(ArrobaModel, pk=arroba_id)
+        
+
+        mydb = twitter_database.mysql_rds_database_authentication('twitter_data')
+        df_tweets = pd.read_sql(f"SELECT * FROM tweets where arroba = '{arroba.arroba}';", con=mydb).sort_values(by='date', ascending=False)
+        df_tweets['date'] = df_tweets['date'].astype(str)
+        string_tweets = df_tweets.to_json(orient='records')
+        json_tweets = json.loads(string_tweets)
+
+        paginator = Paginator(json_tweets, 10)
+        page_number = request.GET.get('page')
+        if not page_number:
+            page_number = 1
+            
+        page_obj = paginator.get_page(page_number)
+        limite_inf_pag = int(page_number) - 5
+        limite_sup_pag = int(page_number) + 5
+        last_page = int(paginator.num_pages)
+
+        contexto = {
+            'arroba':arroba,
+            'len': df_tweets.shape,
+            'json_tweets': json_tweets,
+            'paginated_json_tweets': page_obj,
+            'limite_inf_pag': limite_inf_pag,
+            'limite_sup_pag': limite_sup_pag,
+            'last_page': last_page
+            
         }
 
         return render(request, 'detalhes_arroba.html', context=contexto)

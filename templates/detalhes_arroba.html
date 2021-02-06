@@ -5,9 +5,17 @@
 {% include 'partials/_navbar.html' %}
 
     <div class="container">
-    <h3>{{ arroba.arroba }}</h3>
-    <p>Página inicial app de monitoramento de perfis do Twitter.</p>
-    <p>Numero de tweets {{ len }}.</p>
+    <div class="container">
+        <div>
+            <img src={{ arroba.profile_image_url }} alt="{{arroba.name}} profile picture">
+        </div>
+        <div>
+            <h3>@{{ arroba.arroba }}</h3>
+            <p>{{ arroba.description }}</p>
+            <p>Numero de tweets {{ len }}.</p>
+        </div>
+    </div>
+   
     <section>
         <table class="table">
             <thead>
@@ -17,7 +25,7 @@
             </tr>
             </thead>
             <tbody>
-        {% for tweet in json_tweets %}
+        {% for tweet in paginated_json_tweets %}
             <tr class="row">
                 <td class="col-3">{{ tweet.date }}</td>
                 <td class="col-9">{{ tweet.text }}</td>
@@ -26,6 +34,60 @@
         </tbody>
         </table>        
     </section>
+    
+     <!--Pagination-->
+    <nav aria-label="Page navigation example" class="pagination-menu-margin">
+      <ul class="pagination justify-content-center">
+          
+        {% if paginated_json_tweets.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page=1">Primeira</a>
+          </li>
+        
+          <li class="page-item">
+            <a class="page-link" href="?page={{ paginated_json_tweets.previous_page_number }}">Previous</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Primeira</a>
+          </li>
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+          </li>
+        {% endif %}
+        {% for i in paginated_json_tweets.paginator.page_range %}
+          {% if paginated_json_tweets.number == i %}
+            <li class="page-item active" aria-current="page">
+              <span class="page-link">
+                {{ i }}
+                <span class="sr-only">(current)</span>
+              </span>
+            </li>
+          {% else %}
+          {% if i < limite_sup_pag and i > limite_inf_pag %}
+            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+          {% endif %}
+        {% endif %}
+        {% endfor %}
+        {% if paginated_json_tweets.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ paginated_json_tweets.next_page_number }}">Next</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?page={{ last_page }}">Ultima</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+          </li>
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Ultima</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+    <!--end of Pagination-->
+    
     <section>    
     <a type="button" class="btn btn-danger" href="{% url 'deleta_arroba' arroba.id %}">Deletar</a>   
     <a href="{% url 'dashboard' %}" class="btn btn-primary">Voltar</a>
