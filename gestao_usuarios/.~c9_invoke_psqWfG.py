@@ -76,7 +76,6 @@ def login(request):
         senha = request.POST['senha']
         
         login_form = forms.LoginForms(request.POST)
-        login_form.get_request(request)
     
         if login_form.is_valid():
     
@@ -89,17 +88,6 @@ def login(request):
                     auth.login(request, user)
     
                 return redirect('dashboard')
-                
-            else:
-            
-                contexto = {
-                        'login_form':login_form,
-                    }
-                
-                return render(request, 'login.html', contexto)
-
-            
-            
     
         else:
             
@@ -107,7 +95,7 @@ def login(request):
                     'login_form':login_form,
                 }
             
-            return render(request, 'login.html', contexto)
+            return render(request, 'cadastro_arroba.html', contexto)
 
 
 def logout(request):

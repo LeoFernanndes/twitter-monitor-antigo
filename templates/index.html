@@ -4,13 +4,19 @@
 
 {% include 'partials/_navbar.html' %}
 
+
+
     <div class="container">
     <h3>Página inicial</h3>
     <p>Página inicial app de monitoramento de perfis do Twitter.</p>
-    <section>
+    
+    {% if user.is_authenticated == False %}
+    <p>Clique <a href="{% url 'cadastro' %}">aqui</a> para fazer seu cadastro e começar a coletar informações dos perfis que você quiser.</p>
+    {% endif %}
        
     </section>
     </div>
+    
 
 
 {% endblock %}

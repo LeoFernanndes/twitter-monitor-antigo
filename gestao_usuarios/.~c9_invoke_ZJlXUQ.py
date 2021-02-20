@@ -69,45 +69,21 @@ def login(request):
     
     
     if request.method == 'POST':
-        # if not request.user.is_authenticated():
-        #     return redirect("login")
-        
         email = request.POST['email']
         senha = request.POST['senha']
-        
-        login_form = forms.LoginForms(request.POST)
-        login_form.get_request(request)
-    
-        if login_form.is_valid():
-    
-            if User.objects.filter(email=email).exists():
-                nome = (User.objects.filter(email=email).
-                    values_list('username', flat=True).get())
-                user = auth.authenticate(request, username=nome, password=senha)
-    
-                if user is not None:
-                    auth.login(request, user)
-    
-                return redirect('dashboard')
-                
-            else:
-            
-                contexto = {
-                        'login_form':login_form,
-                    }
-                
-                return render(request, 'login.html', contexto)
 
-            
-            
-    
+        if User.objects.filter(email=email).exists():
+            nome = (User.objects.filter(email=email).
+                values_list('username', flat=True).get())
+            user = auth.authenticate(request, username=nome, password=senha)
+
+            if user is not None:
+                auth.login(request, user)
+
+            return redirect('dashboard')
+
         else:
-            
-            contexto = {
-                    'login_form':login_form,
-                }
-            
-            return render(request, 'login.html', contexto)
+            return redirect('login')
 
 
 def logout(request):
@@ -184,18 +160,7 @@ def cadastro_arroba(request):
         
         arroba_form = forms.ArrobaForms(request.POST)
         
-        arroba_form.get_request(request)
-        print(arroba_form.request.user)
-        
         if arroba_form.is_valid():
-            
-            lista_arrobas = ArrobaModel.objects.filter(user_id=request.user)
-            lista_arrobas = [arroba.arroba for arroba in lista_arrobas]
-           
-           
-            if arroba in lista_arrobas:
-                print("Arroba já faz parte do set")
-                return redirect('dashboard')
             
             arroba_attributes = twitter_api.get_arroba_attributes(arroba)
             
@@ -207,7 +172,7 @@ def cadastro_arroba(request):
             name=arroba_attributes.name)
             
             twitter_arroba.save()
-            
+
             return redirect('dashboard')
 
         else:

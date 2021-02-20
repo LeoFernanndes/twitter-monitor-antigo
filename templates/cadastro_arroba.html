@@ -15,6 +15,11 @@
             <label for="{{ field.id_for_label }}">{{ field.label }}</label>
             {{ field|add_class:'form-control' }}
         </div>
+        {% for error in field.errors %}
+        <section class="alert alert-danger">
+            {{ field.errors }}
+        </section>
+        {% endfor %}    
         {% endfor %}
         </form>
         <button type="submit" form="cadastro_arroba" class="btn btn-success" value="Submit">Enviar</button>
