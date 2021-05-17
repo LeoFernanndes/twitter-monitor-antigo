@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['54.235.208.155']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -91,7 +91,7 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'twitter-monitor',
+        'NAME': os.environ.get('MYSQL_TWITTER_DATABASE'),
         'USER': os.environ.get('MYSQL_TWITTER_USER'),
         'PASSWORD': os.environ.get('MYSQL_TWITTER_PASSWORD'),
         'HOST': os.environ.get('MYSQL_TWITTER_HOST'),

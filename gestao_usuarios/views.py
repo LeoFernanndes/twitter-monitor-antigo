@@ -11,6 +11,10 @@ import json
 import unicodedata
 from django.utils import encoding
 from django.core.paginator import Paginator
+import os
+
+from dotenv import load_dotenv
+load_dotenv()
 
 # Create your views here.
 def index(request):
@@ -250,7 +254,7 @@ def detalha_arroba(request, arroba_id):
         arroba = get_object_or_404(ArrobaModel, pk=arroba_id)
         
 
-        mydb = twitter_database.mysql_rds_database_authentication('twitter_data')
+        mydb = twitter_database.mysql_rds_database_authentication(os.environ.get('MYSQL_TWITTER_DATABASE'))
         df_tweets = pd.read_sql(f"SELECT * FROM tweets where arroba = '{arroba.arroba}';", con=mydb).sort_values(by='date', ascending=False)
         df_tweets['date'] = df_tweets['date'].astype(str)
         string_tweets = df_tweets.to_json(orient='records')
